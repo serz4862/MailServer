@@ -1,11 +1,18 @@
 const SMTPServer = require("smtp-server").SMTPServer;
-// const server = new SMTPServer(options);
-
-// This example starts a SMTP server using TLS with your own certificate and key
 const server = new SMTPServer({
-    secure: true,
-    key: fs.readFileSync("private.key"),
-    cert: fs.readFileSync("server.crt"),
+  onConnect(session,cb){
+    console.log(`onConnect`, session.id)
+    cb(); //Accept the connection
+   // cb(new Error('Connect Acce')) // reject the server
+  },
+  onMailFrom(address, session, cb){
+    console.log(`onMailFrom`, address.address, session.id)
+  }
+});
+
+
+  server.listen(25, ()=>{
+    console.log("Server Running on 25")
+
   });
-  server.listen(465);
   
